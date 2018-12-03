@@ -1,0 +1,32 @@
+<ion-tabs #myTabs>
+
+  <ion-tab tab="drink">
+    <ion-router-outlet name="drink"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab tab="menu" >
+    <ion-router-outlet name="menu"></ion-router-outlet>
+  </ion-tab>
+  <ion-tab tab="contact">
+    <ion-router-outlet name="contact"></ion-router-outlet>
+  </ion-tab>
+
+  <ion-tab-bar slot="bottom">
+
+    <ion-tab-button tab="drink" href="/tabs/(drink:drink)">
+      <ion-icon name="wine"></ion-icon>
+      <ion-label>Drink</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="menu" href="/tabs/(menu:menu)">
+      <ion-icon name="information-circle"></ion-icon>
+      <ion-label>Menu</ion-label>
+    </ion-tab-button>
+
+    <ion-tab-button tab="contact" href="/tabs/(contact:contact)">
+      <ion-icon name="contacts"></ion-icon>
+      <ion-label>Contact</ion-label>
+    </ion-tab-button>
+
+  </ion-tab-bar>
+
+</ion-tabs>

@@ -1,0 +1,17 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ dataService.robot.username }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-card *ngFor="let userDrink of userDrinks">
+    <ion-card-header>
+      <ion-card-subtitle>{{ userDrink.username }}</ion-card-subtitle>
+      <ion-card-title>{{ userDrink.drinkName }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+
+
+</ion-content>

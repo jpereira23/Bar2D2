@@ -1,0 +1,15 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Drink</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+
+  <ion-card *ngFor="let drink of drinks; let j = index" (click)="selectDrink(j)">
+    <ion-card-header>
+    <ion-card-subtitle><span *ngFor="let mixer of drink.mixerAlcohols; let i = index"> {{ mixer.beverage.drinkName }} <span *ngIf="(i+1) != drink.mixerAlcohols.length">, </span></span></ion-card-subtitle>
+    <ion-card-title>{{ drink.drinkName }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
+</ion-content>

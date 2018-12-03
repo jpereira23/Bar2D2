@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Create User</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item *ngIf="robot != null">
+      <ion-label color="primary">Username</ion-label>
+      <ion-input placeholder="Enter Username" [(ngModel)]="robot.username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label color="primary">Bartend ID</ion-label>
+      <ion-input placeholder="Enter ID" [(ngModel)]="robot.bartendId"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="saveStuff()">Save</button>
+</ion-content>
