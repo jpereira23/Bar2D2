@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { AlertController, NavParams, ModalController } from '@ionic/angular';
 import { Drink } from '../../models/drink';
@@ -8,7 +8,8 @@ import { UserDrink } from '../../models/userDrink';
 import { Router, ActivatedRoute, NavigationExtras, NavigationEnd, ParamMap } from '@angular/router';
 import { DataService } from '../../data.service';
 import { Order } from '../../models/order';
-import { SocketService } from '../socket.service';
+import { Socket } from 'ng-socket-io';
+import { OnEnter } from '../../on-enter';
 
 @Component({
   selector: 'app-make-drink',
@@ -22,10 +23,12 @@ export class MakeDrinkPage{
   count: number = 0;
   bartendId: string;
   userDrinks: Array<UserDrink> = [];
-  constructor( private router: Router, private route: ActivatedRoute, private storage: Storage, private dataService: DataService, private alertCtrl: AlertController, private socketService: SocketService){
+  constructor( private router: Router, private route: ActivatedRoute, private storage: Storage, private dataService: DataService, private alertCtrl: AlertController){
+
     this.dataService.userDrink$.subscribe(res => {
       this.userDrinks = res;
     });
+
     this.index = +this.route.snapshot.paramMap.get('index');
     this.storage.get('drinks').then((data) => {
       this.drink = data[this.index];
@@ -35,32 +38,11 @@ export class MakeDrinkPage{
       this.dataService.sendOrder(order);
     });
 
-    this.dataService.presentAlert$.subscribe(data => {
-      this.count = data;
-      this.presentTheAlert();
+    this.dataService.done$.subscribe(data => {
+      //this.dataService.presentAlert$.next(1);
+      this.router.navigate(['drinkIsDone']);
     });
-
-    this.socketService.testing$.subscribe(data => {
-      this.count = data;
-      this.presentTheAlert();
-    });
-
-
   }
 
-  async presentTheAlert(){
-    const theAlert = await this.alertCtrl.create({
-      header: 'Drink Finished',
-      subHeader: 'The robot (' + this.count + ') has successfully made your drink, enjoy!',
-      buttons:[{
-        text: 'OK',
-        role: 'Cancel',
-        handler: () => {
-          this.router.navigate(['']);
-        }
-      }]
-    });
-    await theAlert.present();
-  }
 
 }

@@ -7,6 +7,11 @@ import { CreateUserPage } from '../createUser/createUser.page';
 
 
 const routes: Routes = [
+
+  {
+    path: 'drinkIsDone',
+    component: DrinkPage
+  },
   {
     path: '',
     component: DrinkPage
@@ -15,6 +20,7 @@ const routes: Routes = [
     path: 'makeDrink',
     component: MakeDrinkPage
   },
+
   {
     path: 'createUser',
     component: CreateUserPage

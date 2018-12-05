@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs/operators';
-import { Observable, Subject } from 'rxjs/Rx';
+import { Observable, Subject, AsyncSubject } from 'rxjs/Rx';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { forkJoin } from 'rxjs';
 import { Beverage } from './models/beverage';
@@ -9,7 +9,7 @@ import { Drink } from './models/drink';
 import { UserDrink } from './models/userDrink';
 import { Robot } from './models/robot';
 import { Order } from './models/order';
-import { Socket } from 'ng-socket-io';
+    import { Socket } from 'ng-socket-io';
 
 
 export interface Config {
@@ -32,6 +32,7 @@ export class DataService{
   robot: Robot;
   theDrink$: Subject<Drink>;
   presentAlert$: Subject<number>;
+  done$: Subject<boolean>;
   aCount: number = 0;
 
 
@@ -42,8 +43,7 @@ export class DataService{
     this.prompt$ = new Subject<boolean>();
     this.userDrink$ = new Subject<Array<UserDrink>>();
     this.presentAlert$ = new Subject<number>();
-
-
+    this.done$ = new Subject<boolean>();
   }
 
   configSlots(robot: Robot){
@@ -52,9 +52,11 @@ export class DataService{
   }
 
   flickItOn(){
+
     this.socket.on(this.robot.bartendId, (data) => {
+      this.aCount++;
       if(data.username == this.robot.username){
-        this.presentAlert$.next(this.aCount);
+        this.done$.next(true);
       } else {
         var drinks: Array<UserDrink> = [];
         for(var i = 0; i < data.message.length; i++){
@@ -67,14 +69,7 @@ export class DataService{
 
       }
     });
-  }
 
-  disconnectSocket(){
-    this.socket.disconnect();
-  }
-
-  connectSocket(){
-    this.socket.connect();
   }
 
 
@@ -82,6 +77,7 @@ export class DataService{
     this.storage.get('aUser').then(data => {
       if(data != null){
         this.robot = data;
+
         var anObservable = Observable.fromPromise(this.storage.get('drinks'));
         forkJoin(anObservable,this.http.get<Array<Beverage>>(`${this.url}/getSlots/${this.robot.bartendId}`)).subscribe(data => {
           if(data[1] != null){
@@ -95,9 +91,22 @@ export class DataService{
         this.prompt$.next(false);
       }
     });
+
+  }
+
+  checkConfig(){
+    this.storage.get('aUser').then(data => {
+      if(data != null){
+        this.robot = data;
+        this.flickItOn();
+      } else {
+        this.prompt$.next(false);
+      }
+    });
   }
 
   sendOrder(order: Order){
+
     this.http.post<Order>(`${this.url}/sendOrder`, order, httpOptions).subscribe(res => {
       console.log(res);
     });

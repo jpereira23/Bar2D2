@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { OnEnter } from '../on-enter';
 import { DataService } from '../data.service';
 import { Storage } from '@ionic/storage';
@@ -18,8 +18,9 @@ import { Router, NavigationExtras, NavigationEnd } from '@angular/router';
 export class DrinkPage implements OnInit, OnEnter, OnDestroy{
   private subscription: Subscription;
   drinks: Array<Drink> = [];
+  something: string;
   beverages: Array<Beverage> = [];
-  constructor(private router: Router, private dataService: DataService, private modalCtrl: ModalController){
+  constructor(private router: Router, private dataService: DataService, private alertCtrl: AlertController){
     // Get slots from the server
 
     this.dataService.beverage$.subscribe(res => {
@@ -37,13 +38,20 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
         this.router.navigate(['createUser']);
       }
     });
+    /*
+    this.dataService.presentAlert$.subscribe(res => {
+      this.presentTheAlert();
+    });
+    */
+    this.dataService.refreshData();
 
   }
 
   public async ngOnInit(): Promise<void> {
     await this.onEnter();
 
-    this.subscription = this.router.events.subscribe((event) => {
+    this.subscription = this.router.events.subscribe((event: NavigationEnd) => {
+
       if(event instanceof NavigationEnd && event.url === '/tabs/(drink:drink)'){
         this.onEnter();
       }
@@ -51,7 +59,26 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
   }
 
   public async onEnter(): Promise<void> {
-    this.dataService.refreshData();
+    this.router.events.filter(event => event instanceof NavigationEnd).subscribe((e: NavigationEnd) => {
+      if(e.url == "/drinkIsDone"){
+        this.presentTheAlert();
+      }
+    });
+  }
+
+  async presentTheAlert(){
+    const theAlert = await this.alertCtrl.create({
+      header: 'Drink Finished',
+      subHeader: 'The robot has successfully made your drink, enjoy!',
+      buttons:[{
+        text: 'OK',
+        role: 'Cancel',
+        handler: () => {
+          //this.router.navigate(['']);
+        }
+      }]
+    });
+    await theAlert.present();
   }
 
 
@@ -63,7 +90,7 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
     }
     this.router.navigate(['makeDrink'], navigationExtras);
   }
-  
+
   public ngOnDestroy(): void{
     this.subscription.unsubscribe();
   }
