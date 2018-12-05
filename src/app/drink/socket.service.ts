@@ -7,10 +7,13 @@ import { Socket } from 'ng-socket-io';
 export class SocketService{
   isCount: number = 0;
   testing$: Subject<number>;
+  testing1$: Subject<number>;
   constructor(private socket: Socket){
-    this.isCount++;
     this.testing$ = new Subject<number>();
+    this.testing1$ = new Subject<number>();
+
     this.socket.on("12345", (data) => {
+      this.isCount = 0;
       this.testing$.next(this.isCount);
       /*
       if(data.username == this.robot.username){
@@ -27,6 +30,10 @@ export class SocketService{
 
       }
       */
+    });
+    this.socket.on("12345JPEREIRA", (data) => {
+      this.isCount = 1;
+      this.testing1$.next(this.isCount);
     });
   }
 

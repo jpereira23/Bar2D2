@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Storage } from '@ionic/storage';
+import { OnEnter } from '../../on-enter';
 import { AlertController, NavParams, ModalController } from '@ionic/angular';
 import { Drink } from '../../models/drink';
 import { Subscription } from 'rxjs/subscription';
@@ -16,16 +17,48 @@ import { SocketService } from '../socket.service';
   styleUrls: ['makeDrink.page.scss']
 })
 
-export class MakeDrinkPage{
+export class MakeDrinkPage implements OnInit, OnDestroy, OnEnter{
   drink: Drink;
   index: number;
   count: number = 0;
   bartendId: string;
+  user: string;
+  private subscription: Subscription;
   userDrinks: Array<UserDrink> = [];
   constructor( private router: Router, private route: ActivatedRoute, private storage: Storage, private dataService: DataService, private alertCtrl: AlertController, private socketService: SocketService){
     this.dataService.userDrink$.subscribe(res => {
       this.userDrinks = res;
     });
+
+
+    this.dataService.presentAlert$.subscribe(data => {
+      this.count = data;
+      this.presentTheAlert();
+    });
+    /*
+    this.count++;
+    this.socketService.testing1$.subscribe(data => {
+      this.presentTheAlert();
+    });
+    this.socketService.testing$.subscribe(data => {
+      this.presentTheAlert();
+    });
+    */
+
+
+  }
+
+  public async ngOnInit(): Promise<void> {
+    await this.onEnter();
+
+    this.subscription = this.router.events.subscribe((event) => {
+      if(event instanceof NavigationEnd && event.url === 'makeDrink'){
+        this.onEnter();
+      }
+    });
+  }
+
+  public async onEnter(): Promise<void> {
     this.index = +this.route.snapshot.paramMap.get('index');
     this.storage.get('drinks').then((data) => {
       this.drink = data[this.index];
@@ -34,18 +67,6 @@ export class MakeDrinkPage{
       order.theDrink = this.drink;
       this.dataService.sendOrder(order);
     });
-
-    this.dataService.presentAlert$.subscribe(data => {
-      this.count = data;
-      this.presentTheAlert();
-    });
-
-    this.socketService.testing$.subscribe(data => {
-      this.count = data;
-      this.presentTheAlert();
-    });
-
-
   }
 
   async presentTheAlert(){
@@ -61,6 +82,10 @@ export class MakeDrinkPage{
       }]
     });
     await theAlert.present();
+  }
+
+  public ngOnDestroy(): void{
+    this.subscription.unsubscribe();
   }
 
 }

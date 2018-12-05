@@ -63,7 +63,7 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
     }
     this.router.navigate(['makeDrink'], navigationExtras);
   }
-  
+
   public ngOnDestroy(): void{
     this.subscription.unsubscribe();
   }
