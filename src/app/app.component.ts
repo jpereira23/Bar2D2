@@ -6,7 +6,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Socket } from 'ng-socket-io';
 import { Router } from '@angular/router';
 import { AlertController, NavParams, ModalController } from '@ionic/angular';
-
+import { UserDrink } from './models/userDrink';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html'
@@ -30,6 +30,14 @@ export class AppComponent {
       this.dataService.refreshData();
       this.dataService.robot$.subscribe(res => {
         this.socket.on(res.bartendId, (data) => {
+          var drinks: Array<UserDrink> = [];
+          for(var i = 0; i < data.message.length; i++){
+            var aDrink = new UserDrink();
+            aDrink.username = data.message[i].aRobot.username;
+            aDrink.drinkName = data.message[i].theDrink.drinkName;
+            drinks.push(aDrink);
+          }
+          this.dataService.userDrink$.next(drinks);
           this.presentTheAlert();
         });
       });
