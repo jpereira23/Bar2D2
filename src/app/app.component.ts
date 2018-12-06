@@ -27,9 +27,11 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-
-      this.socket.on("12345", (data) => {
-        this.presentTheAlert();
+      this.dataService.refreshData();
+      this.dataService.robot$.subscribe(res => {
+        this.socket.on(res.bartendId, (data) => {
+          this.presentTheAlert();
+        });
       });
       this.statusBar.styleDefault();
       this.splashScreen.hide();

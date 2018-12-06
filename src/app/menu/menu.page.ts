@@ -45,7 +45,7 @@ private subscription: Subscription;
   }
 
   public async onEnter(): Promise<void> {
-    this.dataService.refreshData();
+    //this.dataService.refreshData();
   }
 
   addDrink(){

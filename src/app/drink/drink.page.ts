@@ -51,7 +51,7 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
   }
 
   public async onEnter(): Promise<void> {
-    this.dataService.refreshData();
+    //this.dataService.refreshData();
   }
 
 

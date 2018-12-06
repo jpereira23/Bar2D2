@@ -29,6 +29,7 @@ export class DataService{
   drink$: Subject<Array<Drink>>;
   prompt$: Subject<boolean>;
   userDrink$: Subject<Array<UserDrink>>;
+  robot$: Subject<Robot>;
   robot: Robot;
   theDrink$: Subject<Drink>;
   presentAlert$: Subject<number>;
@@ -42,7 +43,7 @@ export class DataService{
     this.prompt$ = new Subject<boolean>();
     this.userDrink$ = new Subject<Array<UserDrink>>();
     this.presentAlert$ = new Subject<number>();
-
+    this.robot$ = new Subject<Robot>();
 
   }
 
@@ -82,6 +83,7 @@ export class DataService{
     this.storage.get('aUser').then(data => {
       if(data != null){
         this.robot = data;
+        this.robot$.next(this.robot);
         var anObservable = Observable.fromPromise(this.storage.get('drinks'));
         forkJoin(anObservable,this.http.get<Array<Beverage>>(`${this.url}/getSlots/${this.robot.bartendId}`)).subscribe(data => {
           if(data[1] != null){
