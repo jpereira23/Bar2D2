@@ -4,6 +4,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DrinkPage } from './drink.page';
 import { MakeDrinkPage } from './makeDrink/makeDrink.page';
 import { CreateUserPage } from '../createUser/createUser.page';
+import { ScannerPage } from '../createUser/scanner/scanner.page';
 
 
 const routes: Routes = [
@@ -18,6 +19,10 @@ const routes: Routes = [
   {
     path: 'createUser',
     component: CreateUserPage
+  },
+  {
+    path: 'scannerPage',
+    component: ScannerPage
   }
 ];
 

@@ -8,6 +8,7 @@ import { DrinkPage } from './drink.page';
 import { DrinkPageRoutingModule } from './drink.router.module';
 import { MakeDrinkPage } from './makeDrink/makeDrink.page';
 import { CreateUserPage } from '../createUser/createUser.page';
+import { ScannerPage } from '../createUser/scanner/scanner.page';
 import { SocketService } from './socket.service';
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { SocketService } from './socket.service';
   providers: [
     SocketService
   ],
-  declarations: [DrinkPage, MakeDrinkPage, CreateUserPage]
+  declarations: [DrinkPage, MakeDrinkPage, CreateUserPage, ScannerPage]
 })
 
 export class DrinkPageModule {}

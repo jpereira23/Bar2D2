@@ -77,3 +77,7 @@
   --ion-color-light-tint: #f5f6f9;
 
 }
+
+app-root.cameraView, app-root.cameraView ion-content, app-root.cameraView .nav-decor {
+  background: transparent none !important;
+}
