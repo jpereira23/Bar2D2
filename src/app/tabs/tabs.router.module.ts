@@ -4,6 +4,7 @@ import { TabsPage } from './tabs.page';
 import { ContactPage } from '../contact/contact.page';
 import { DrinkPage } from '../drink/drink.page';
 import { MenuPage } from '../menu/menu.page';
+import { SettingsPage } from '../settings/settings.page';
 
 
 const routes: Routes = [
@@ -27,9 +28,9 @@ const routes: Routes = [
         component: MenuPage
       },
       {
-        path: 'contact',
-        outlet: 'contact',
-        component: ContactPage
+        path: 'settings',
+        outlet: 'settings',
+        component: SettingsPage
       }
 
     ]

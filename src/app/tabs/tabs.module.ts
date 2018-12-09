@@ -11,6 +11,7 @@ import { TabsPage } from './tabs.page';
 import { ContactPageModule } from '../contact/contact.module';
 import { DrinkPageModule } from '../drink/drink.module';
 import { MenuPageModule } from '../menu/menu.module';
+import { SettingsPageModule } from '../settings/settings.module';
 
 
 @NgModule({
@@ -19,7 +20,7 @@ import { MenuPageModule } from '../menu/menu.module';
     CommonModule,
     FormsModule,
     TabsPageRoutingModule,
-    ContactPageModule,
+    SettingsPageModule,
     DrinkPageModule,
     MenuPageModule,
     IonicStorageModule
