@@ -52,33 +52,6 @@ export class DataService{
 
   }
 
-  flickItOn(){
-    this.socket.on(this.robot.bartendId, (data) => {
-      if(data.username == this.robot.username){
-        this.presentAlert$.next(this.aCount);
-      } else {
-        var drinks: Array<UserDrink> = [];
-        for(var i = 0; i < data.message.length; i++){
-          var aDrink = new UserDrink();
-          aDrink.username = data.message[i].aRobot.username;
-          aDrink.drinkName = data.message[i].theDrink.drinkName;
-          drinks.push(aDrink);
-        }
-        this.userDrink$.next(drinks);
-
-      }
-    });
-  }
-
-  disconnectSocket(){
-    this.socket.disconnect();
-  }
-
-  connectSocket(){
-    this.socket.connect();
-  }
-
-
   refreshData(){
     this.storage.get('aUser').then(data => {
       if(data != null){
@@ -97,6 +70,10 @@ export class DataService{
         this.prompt$.next(false);
       }
     });
+  }
+
+  setDrinks(drinks: Array<Drink>){
+    this.storage.set('drinks', drinks);
   }
 
   sendOrder(order: Order){

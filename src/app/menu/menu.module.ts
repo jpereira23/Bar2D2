@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MenuPage } from './menu.page';
 import { AddDrinkPage } from './addDrink/addDrink.page';
+import { EditDrinkPage } from './editDrink/editDrink.page';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { AddDrinkPage } from './addDrink/addDrink.page';
     FormsModule,
     MenuPageRoutingModule
   ],
-  declarations: [MenuPage, AddDrinkPage]
+  declarations: [MenuPage, AddDrinkPage, EditDrinkPage]
 })
 
 export class MenuPageModule {}

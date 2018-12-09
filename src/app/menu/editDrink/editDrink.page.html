@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ drink.drinkName }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content padding *ngIf="drink != null">
+  <ion-item>
+    <ion-label position="floating">Drink Name</ion-label>
+    <ion-input [(ngModel)]="drink.drinkName"></ion-input>
+  </ion-item>
+
+  <ion-card *ngFor="let mixer of drink.mixerAlcohols">
+    <ion-item>
+      <ion-label>Select Beverage</ion-label>
+      <ion-select [(ngModel)]="mixer.beverage" (ionChange)="onChange($event)">
+        <ion-select-option *ngFor="let beverage of beverages" [value]="beverage">
+          {{ beverage.drinkName }}
+        </ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label *ngIf="overHundred == false && (mixer.scale > 1 || mixer.scale == 0)" round color="secondary">{{mixer.scale}} parts</ion-label>
+      <ion-label *ngIf="overHundred == false && mixer.scale == 1" round color="secondary">{{ mixer.scale }} part</ion-label>
+      <ion-label *ngIf="overHundred == true && (mixer.scale > 1 || mixer.scale == 0)" round color="danger">{{ mixer.scale }} parts</ion-label>
+      <ion-label *ngIf="overHundred == true && mixer.scale == 1" round color="danger">{{ mixer.scale }} part</ion-label>
+      <ion-range [(ngModel)]="mixer.scale" min="0" max="10" step="1" (ionChange)="changingPercentage()">
+        <ion-label slot="end">10</ion-label>
+      </ion-range>
+    </ion-item>
+  </ion-card>
+  <button class="addBeverage" (click)="addABeverage()">Add Beverage</button>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <ion-buttons slot="end">
+      <ion-button (click)="submit()">Submit</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-footer>

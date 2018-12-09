@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MenuPage } from './menu.page';
 import { AddDrinkPage } from './addDrink/addDrink.page';
+import { EditDrinkPage } from './editDrink/editDrink.page';
 
 
 const routes: Routes = [
@@ -14,6 +15,10 @@ const routes: Routes = [
   {
     path: 'addDrink',
     component: AddDrinkPage
+  },
+  {
+    path: 'editDrink',
+    component: EditDrinkPage
   }
 ];
 

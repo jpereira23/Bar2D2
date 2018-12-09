@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OnEnter } from '../on-enter';
 import { DataService } from '../data.service';
 import { Beverage } from '../models/beverage';
-import { Router, NavigationEnd } from '@angular/router';
+import { Router, NavigationEnd, NavigationExtras } from '@angular/router';
 import { Drink } from '../models/drink';
 import { Subscription } from 'rxjs/subscription';
 
@@ -17,6 +17,7 @@ export class MenuPage implements OnInit, OnEnter, OnDestroy {
 private subscription: Subscription;
   private beverages: Array<Beverage> = [];
   private drinks: Array<Drink> = [];
+  private editState: boolean = false;
 
   constructor(private dataService: DataService, private router: Router){
 
@@ -45,7 +46,7 @@ private subscription: Subscription;
   }
 
   public async onEnter(): Promise<void> {
-    //this.dataService.refreshData();
+    this.dataService.refreshData();
   }
 
   addDrink(){
@@ -54,6 +55,20 @@ private subscription: Subscription;
 
   public ngOnDestroy(): void{
     this.subscription.unsubscribe();
+  }
+
+  edit(index: number){
+    var navigationExtras: NavigationExtras = {
+      queryParams: {
+        "index": index
+      }
+    }
+    this.router.navigate(['editDrink'], navigationExtras);
+  }
+
+  delete(index: number){
+    this.drinks.splice(index, 1);
+    this.dataService.setDrinks(this.drinks);
   }
 
 }

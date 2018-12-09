@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-buttons slot="end">
+    <ion-buttons slot="start">
       <button ion-button (click)="addDrink()">Add Drink</button>
     </ion-buttons>
     <ion-title>Menu</ion-title>
@@ -8,10 +8,38 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngFor="let drink of drinks">
-    <ion-card-header>
-    <ion-card-subtitle><span *ngFor="let mixer of drink.mixerAlcohols; let i = index"> {{ mixer.beverage.drinkName }} <span *ngIf="(i+1) != drink.mixerAlcohols.length">, </span></span></ion-card-subtitle>
-    <ion-card-title>{{ drink.drinkName }}</ion-card-title>
-    </ion-card-header>
-  </ion-card>
+  <!--
+  <div *ngIf="editState == false">
+    <ion-card *ngFor="let drink of drinks">
+      <ion-fab vertical="top" horizontal="end" edge slot="fixed">
+        <ion-fab-button>
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button>
+      </ion-fab>
+      <ion-card-header>
+      <ion-card-subtitle><span *ngFor="let mixer of drink.mixerAlcohols; let i = index"> {{ mixer.beverage.drinkName }} <span *ngIf="(i+1) != drink.mixerAlcohols.length">, </span></span></ion-card-subtitle>
+      <ion-card-title>{{ drink.drinkName }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+  <div *ngIf="editState == true">
+    <ion-card *ngFor="let drink of drinks">
+      <ion-card-header>
+      <ion-card-subtitle><span *ngFor="let mixer of drink.mixerAlcohols; let i = index"> {{ mixer.beverage.drinkName }} <span *ngIf="(i+1) != drink.mixerAlcohols.length">. </span></span></ion-card-subtitle>
+      <ion-card-title>{{ drink.drinkName }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
+  -->
+  <ion-list *ngFor="let drink of drinks; let i = index;">
+    <ion-item-sliding>
+      <ion-item>
+        <ion-label>{{ drink.drinkName }}</ion-label>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="delete(i)">Delete</ion-item-option>
+        <ion-item-option color="light" (click)="edit(i)">Edit</ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 </ion-content>

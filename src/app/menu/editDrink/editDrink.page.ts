@@ -1,36 +1,38 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { OnEnter } from '../../on-enter';
-import { Router, NavigationEnd } from '@angular/router';
-import { MixerAlcohol } from '../../models/mixer-alcohol';
-import { Beverage } from '../../models/beverage';
-import { Drink } from '../../models/drink';
-import { Storage } from '@ionic/storage';
+import { Router, NavigationEnd, ActivatedRoute, ParamMap} from '@angular/router';
 import { Subscription } from 'rxjs/subscription';
 import { DataService } from '../../data.service';
+import { Drink } from '../../models/drink';
+import { MixerAlcohol } from '../../models/mixer-alcohol';
+import { Beverage } from '../../models/beverage';
+import { Storage } from '@ionic/storage';
 
 @Component({
-  selector: 'app-add-drink',
-  templateUrl: 'addDrink.page.html',
-  styleUrls: ['addDrink.page.scss']
+  selector: 'app-edit-drink',
+  templateUrl: 'editDrink.page.html',
+  styleUrls: ['editDrink.page.scss']
 })
 
-export class AddDrinkPage implements OnInit, OnEnter, OnDestroy{
-  private subscription: Subscription;
-  drink: Drink = new Drink();
+export class EditDrinkPage implements OnInit, OnEnter, OnDestroy{
+  index: number;
+  drink: Drink;
   overHundred: boolean = false;
-  currentMixerAlcohol: MixerAlcohol = new MixerAlcohol();
   beverages: Array<Beverage> = [];
   drinks: Array<Drink> = [];
+  private subscription: Subscription;
 
-  constructor(private dataService: DataService, private router: Router, private storage: Storage){
+  constructor(private router: Router, private route: ActivatedRoute, private storage: Storage, private dataService: DataService){
+    this.index = +this.route.snapshot.paramMap.get('index');
+    this.storage.get('drinks').then((data) => {
+      this.drink = data[this.index];
+      this.drinks = data;
+      this.drinks.splice(this.index, 1);
+    });
+
     this.dataService.beverage$.subscribe(res => {
       this.beverages = [];
       this.beverages = res;
-    });
-
-    this.dataService.drink$.subscribe(res => {
-      this.drinks = [];
-      this.drinks = res;
     });
   }
 
@@ -60,7 +62,6 @@ export class AddDrinkPage implements OnInit, OnEnter, OnDestroy{
       this.drink.mixerAlcohols.push(aMixerAlcohol);
     }
   }
-
   submit(){
     this.drinks.push(this.drink);
     this.storage.set('drinks', this.drinks);
@@ -68,7 +69,6 @@ export class AddDrinkPage implements OnInit, OnEnter, OnDestroy{
   }
 
   changingPercentage(){
-
     var sum = 0;
     for(var i = 0; i < this.drink.mixerAlcohols.length; i++){
       sum = sum + this.drink.mixerAlcohols[i].scale;
@@ -84,4 +84,5 @@ export class AddDrinkPage implements OnInit, OnEnter, OnDestroy{
   public ngOnDestroy(): void{
     this.subscription.unsubscribe();
   }
+
 }

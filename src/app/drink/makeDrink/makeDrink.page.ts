@@ -35,15 +35,6 @@ export class MakeDrinkPage implements OnInit, OnDestroy, OnEnter{
       this.count = data;
       this.presentTheAlert();
     });
-    /*
-    this.count++;
-    this.socketService.testing1$.subscribe(data => {
-      this.presentTheAlert();
-    });
-    this.socketService.testing$.subscribe(data => {
-      this.presentTheAlert();
-    });
-    */
 
 
   }
