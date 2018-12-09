@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DataService } from '../data.service';
 
 @Component({
   selector: 'app-settings',
@@ -7,7 +8,11 @@ import { Component } from '@angular/core';
 })
 export class SettingsPage {
 
-  constructor(){
-    
+  constructor(private dataService: DataService){
+
+  }
+
+  save(){
+    this.dataService.setRobot();
   }
 }

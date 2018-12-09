@@ -52,6 +52,10 @@ export class DataService{
 
   }
 
+  setRobot(){
+    this.storage.set('aUser', this.robot);
+  }
+
   refreshData(){
     this.storage.get('aUser').then(data => {
       if(data != null){

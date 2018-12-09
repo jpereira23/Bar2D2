@@ -6,6 +6,19 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  Settings Page.
+<ion-content padding>
+  <ion-list>
+    <ion-list-header>
+      Robot Configuration
+    </ion-list-header>
+    <ion-item>
+      <ion-label>Username</ion-label>
+      <ion-input [(ngModel)]="dataService.robot.username"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Bartend ID</ion-label>
+      <ion-input [(ngModel)]="dataService.robot.bartendId"></ion-input>
+    </ion-item>
+  </ion-list>
+  <button ion-button (click)="save()">Submit</button>
 </ion-content>
