@@ -40,7 +40,16 @@ export class AppComponent {
           this.dataService.userDrink$.next(drinks);
           this.presentTheAlert();
         });
+        this.socket.on(res.bartendId+"bluetooth", (data) => {
+          if(data.message == "on"){
+            this.dataService.bluetoothI$.next(true);
+          } else {
+            this.dataService.bluetoothI$.next(false);
+          }
+        });
       });
+
+
       this.statusBar.styleDefault();
       this.splashScreen.hide();
     });

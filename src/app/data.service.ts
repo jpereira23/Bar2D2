@@ -33,6 +33,7 @@ export class DataService{
   robot: Robot;
   theDrink$: Subject<Drink>;
   presentAlert$: Subject<number>;
+  bluetoothI$: Subject<boolean>;
   aCount: number = 0;
 
 
@@ -44,6 +45,7 @@ export class DataService{
     this.userDrink$ = new Subject<Array<UserDrink>>();
     this.presentAlert$ = new Subject<number>();
     this.robot$ = new Subject<Robot>();
+    this.bluetoothI$ = new Subject<boolean>();
 
   }
 

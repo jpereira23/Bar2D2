@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy} from '@angular/core';
-import { ModalController } from '@ionic/angular';
+import { AlertController } from '@ionic/angular';
 import { OnEnter } from '../on-enter';
 import { DataService } from '../data.service';
 import { Storage } from '@ionic/storage';
@@ -19,7 +19,8 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
   private subscription: Subscription;
   drinks: Array<Drink> = [];
   beverages: Array<Beverage> = [];
-  constructor(private router: Router, private dataService: DataService, private modalCtrl: ModalController){
+  connected: boolean = false;
+  constructor(private router: Router, private dataService: DataService, private alertCtrl: AlertController){
     // Get slots from the server
 
     this.dataService.beverage$.subscribe(res => {
@@ -35,6 +36,14 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
     this.dataService.prompt$.subscribe(res => {
       if(res == false){
         this.router.navigate(['createUser']);
+      }
+    });
+
+    this.dataService.bluetoothI$.subscribe(res => {
+      if(res == true){
+        this.connected = true;
+      } else {
+        this.connected = false;
       }
     });
 
@@ -56,16 +65,34 @@ export class DrinkPage implements OnInit, OnEnter, OnDestroy{
 
 
   selectDrink(j: number){
-    var navigationExtras: NavigationExtras = {
-      queryParams: {
-        "index": j
+    if(this.connected == true){
+      var navigationExtras: NavigationExtras = {
+        queryParams: {
+          "index": j
+        }
       }
+      this.router.navigate(['makeDrink'], navigationExtras);
+    } else if(this.connected == false){
+      this.bluetoothFalse();
     }
-    this.router.navigate(['makeDrink'], navigationExtras);
   }
 
   public ngOnDestroy(): void{
     this.subscription.unsubscribe();
+  }
+
+  async bluetoothFalse(){
+    const theAlert = await this.alertCtrl.create({
+      header: 'Robot is not connected',
+      subHeader: 'Please go to the tablet and make sure the indicator is on blue, if not press the indicator.',
+      buttons:[{
+        text: 'OK',
+        role: 'Cancel',
+        handler: () => {
+        }
+      }]
+    });
+    await theAlert.present();
   }
 
 }
